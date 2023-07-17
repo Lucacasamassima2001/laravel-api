@@ -74,7 +74,7 @@
                 </td>
                 <td>
                     <button type="button" class="btn btn-danger js-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="
-                    {{$project->id}}">
+                    {{$project->slug}}">
                         Trash
                     </button>
                 </td>

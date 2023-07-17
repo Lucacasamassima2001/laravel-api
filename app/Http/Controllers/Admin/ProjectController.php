@@ -73,6 +73,7 @@ class ProjectController extends Controller
         // salvare i dati se corretti
         $newProject = new Project();
         $newProject->title          = $data['title'];
+        $newProject->slug          = Project::slugger($data['title']);
         $newProject->type_id        = $data['type_id'];
         $newProject->url_image      = $data['url_image'];
         $newProject->image      = $imagePath;
@@ -95,10 +96,10 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($slug)
     {
-       return view('admin.projects.show', compact('project'));
-        
+        $project = Project::where('slug', $slug)->firstOrFail();
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
@@ -107,8 +108,10 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit($slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
+
         $types = Type::all();
         $technologies = Technology::all();
 
@@ -122,8 +125,9 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
 
         $request->validate($this->validations, $this->validation_messages);
         // richiedere($data) e validare i dati del form
@@ -167,8 +171,9 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($slug)
     {
+        $project = Project::where('slug', $slug)->firstOrFail();
         $project->delete();
         return to_route('admin.projects.index')->with('delete_success', $project);
     }
@@ -208,5 +213,10 @@ class ProjectController extends Controller
 
 
         return to_route('admin.projects.trashed')->with('delete_success', $project);
+    }
+    public function prova($slug) {
+        $project = Project::where('slug', $slug)->firstOrFail();
+
+        return $project->title;
     }
 }

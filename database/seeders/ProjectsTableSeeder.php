@@ -20,6 +20,7 @@ class ProjectsTableSeeder extends Seeder
     {
         for($i = 0; $i < 50; $i++){
             $title = $faker->sentence();
+            $slug = Project::slugger($title);
             // $slug = Project::slugger($title);
             $types = Type::all();
             // pluck scompatta l'array scelto per poter associare i valori
@@ -27,7 +28,7 @@ class ProjectsTableSeeder extends Seeder
             $project = Project::create([
                 'type_id' => $faker->randomElement($types)->id,
                 'title' => $title,
-                // 'slug' => $slug,
+                'slug'          => $slug,
                 'url_image'=> $faker->imageUrl(640, 480, 'animals', true),
                 'repo'=>  $faker->word(),
                 'description'=> $faker->paragraph(),
