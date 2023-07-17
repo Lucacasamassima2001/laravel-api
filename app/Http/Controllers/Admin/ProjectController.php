@@ -17,7 +17,7 @@ class ProjectController extends Controller
             'title'=> 'required|string|min:5|max:100',
             'type_id' =>'required|integer|exists:types,id',
             'url_image'=> 'nullable|required|url|max:200',
-            // 'image' => 'nullable|image|max:512',
+            'image' => 'nullable|image|max:512',
             'repo'=> 'required|string|min:5|max:100',
             'description'=> 'required|string|min:5',
             // 'technologies' => 'nullable|array',
@@ -134,17 +134,17 @@ class ProjectController extends Controller
         $data = $request->all();
 
 
-        if($data['image']){
-        // salvare eventuale img nuova
-        $imagePath = Storage::put('uploads', $data['image']);
+        if ($data['image']) {
+            // salvare l'immagine nuova
+            $imagePath = Storage::put('uploads', $data['image']);
 
-        if($project->image)
-        // eliminare eventuale img vecchia
-        Storage::delete($project->image);
+            // eliminare l'immagine vecchia
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
 
-        // aggiorno valore nella colonna
-        $project->image      = $imagePath;
-
+            // aggiormare il valore nella colonna con l'indirizzo dell'immagine nuova
+            $project->image = $imagePath;
         }
         
 
@@ -171,9 +171,9 @@ class ProjectController extends Controller
      * @param  \App\Models\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy($slug)
+    public function destroy($id)
     {
-        $project = Project::where('slug', $slug)->firstOrFail();
+        $project = Project::where('id', $id)->firstOrFail();
         $project->delete();
         return to_route('admin.projects.index')->with('delete_success', $project);
     }
@@ -198,7 +198,7 @@ class ProjectController extends Controller
     {
         
 
-        $project = Project::withTrashed()->find($id);
+        $project = Project::withTrashed()->where('id', $id)->firstOrFail();
 
         if($project->image)
         // eliminare eventuale img vecchia
