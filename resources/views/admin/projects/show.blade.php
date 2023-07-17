@@ -13,7 +13,7 @@
             <img class="py-3" src="{{$project->url_image}}" alt="">
         </div>
         <div class="container d-flex justify-content-center">
-            <img class="py-3" src="{{asset('storage/' . $project->image)}}" alt="">
+            <img class="py-3 image-loaded" src="{{asset('storage/' . $project->image)}}" alt="">
         </div>
     </div>
 @endsection
@@ -22,5 +22,9 @@
 <style lang="scss" scoped>
     .show{
         color: white;
+    }
+
+    .image-loaded{
+        width: 650px;
     }
 </style>

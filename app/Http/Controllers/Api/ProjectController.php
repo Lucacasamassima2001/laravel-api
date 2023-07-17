@@ -28,7 +28,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $project = Project::where('id', $id)->firstOrFail();
+        return response()->json($project);
+
     }
 
     
