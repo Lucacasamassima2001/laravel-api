@@ -27,9 +27,10 @@ class ProjectsTableSeeder extends Seeder
             $technologies = Technology::all()->pluck('id');
             $project = Project::create([
                 'type_id' => $faker->randomElement($types)->id,
-                'title' => $title,
+                'title' => Str::ucfirst($title),
                 'slug'          => $slug,
                 'url_image'=> $faker->imageUrl(640, 480, 'animals', true),
+                // 'image' => $imageIndex ? 'uploads/picsum' .$imageIndex .'jpg' : null,
                 'repo'=>  $faker->word(),
                 'description'=> $faker->paragraph(),
             ]);

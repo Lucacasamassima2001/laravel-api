@@ -13,11 +13,19 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $projects = Project::with('type', 'technologies')->paginate(6);
+        // filtro risultati 
+        // gestione parametro q
+        $searchString = $request->query('q', '');
 
-        return response()->json($projects);
+
+        $projects = Project::with('type', 'technologies')->where('title', 'LIKE',"%${searchString}%")->paginate(6);
+
+        return response()->json([
+            'success' =>  true,
+            'results' => $projects,
+        ]);
     }
 
 
@@ -29,8 +37,11 @@ class ProjectController extends Controller
      */
     public function show($slug)
     {
-        $project = Project::where('slug', $slug)->firstOrFail();
-        return response()->json($project);
+        $project = Project::where('slug', $slug)->first();
+        return response()->json([
+            'success' => $project ? true : false,
+            'results' => $project,
+        ]);
 
     }
 
