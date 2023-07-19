@@ -134,7 +134,7 @@ class ProjectController extends Controller
         $data = $request->all();
 
 
-        if ($data['image']) {
+        if (isset($data['image'])) {
             // salvare l'immagine nuova
             $imagePath = Storage::put('uploads', $data['image']);
 
