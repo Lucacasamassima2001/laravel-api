@@ -25,7 +25,7 @@ class ProjectController extends Controller
         $query = Project::with('type', 'technologies');
 
         if($searchString){
-            $query = $query->where('title' , 'LIKE', "%${searchString}");
+            $query = $query->where('title' , 'LIKE', "%${searchString}%");
         }
 
         if($typeid){
