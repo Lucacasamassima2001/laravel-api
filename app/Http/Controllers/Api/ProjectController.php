@@ -17,10 +17,22 @@ class ProjectController extends Controller
     {
         // filtro risultati 
         // gestione parametro q
-        $searchString = $request->query('q', '');
+        $searchString = $request->query('q');
+        $typeid = $request->query('types');
 
 
-        $projects = Project::with('type', 'technologies')->where('title', 'LIKE',"%${searchString}%")->paginate(6);
+
+        $query = Project::with('type', 'technologies');
+
+        if($searchString){
+            $query = $query->where('title' , 'LIKE', "%${searchString}");
+        }
+
+        if($typeid){
+            $query = $query->where('type_id', $typeid);
+        }
+
+        $projects = $query->paginate(6);
 
         return response()->json([
             'success' =>  true,
